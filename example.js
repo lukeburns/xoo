@@ -2,6 +2,7 @@ const xoo = require('./')
 const bel = require('bel')
 const location = require('./location')
 const logger = require('./logger')
+const localStorage = require('./localStorage')
 
 const observe = xoo({
   count: 0,
@@ -10,8 +11,9 @@ const observe = xoo({
   }
 })
 
+observe.use(localStorage)
 observe.use(location)
-observe.use(observe.observable)
+observe.use(observe.observable) 
 observe.use(logger)
 
 document.body = observe(body)({ 
@@ -20,9 +22,11 @@ document.body = observe(body)({
 
 function body (state) {
   return bel`<body>
-    <h1>count is ${this.count} ${this.name}</h1>
-    <button onclick=${this.increment}>increment</button>
-    <p>${state.text}</p>
+    <div id="count">
+      <h1>count is ${this.count}</h1>
+      <button onclick=${this.increment}>increment</button>
+    </div>
     <p>${JSON.stringify(this.location)}</p>
+    <p>${state.text}</p>
   </body>`
 }

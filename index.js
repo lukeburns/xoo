@@ -9,8 +9,9 @@ function xoo (obj={}) {
     return _.apply(state, arguments)
   }
   observe.use = function (fn) {
+    const init = Object.assign({}, obj)
     use.push(fn)
-    state = use.reduce((prev, next) => next(prev) || prev, obj)
+    state = use.reduce((prev, next) => next(prev) || prev, init)
   }
   
   observe.observable = function (obj) {

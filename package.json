@@ -9,7 +9,8 @@
   "devDependencies": {
     "@nx-js/observer-util": "^4.1.2",
     "bel": "^5.1.7",
-    "history-events": "^1.0.4"
+    "history-events": "^1.0.4",
+    "store2": "^2.7.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
