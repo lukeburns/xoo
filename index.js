@@ -1,10 +1,13 @@
 const _ = require('morphable')
 
-module.exports = function xoo (obj) {
-  const state = _(strict(obj))
-  const observe = _.bind(state)
+module.exports = function xoo (obj={}) {
+  let state = _(strict(obj))
+  const observe = function () {
+    return _.apply(state, arguments)
+  }
   observe.use = function (fn) {
-    fn.call(state) // todo: thinking to do around polyfill compatibility here (e.g. dynamically adding properties). goals include: observable window.location for routing, or tracking state mutation.
+    const res = fn.call(obj)
+    if (typeof res === 'object') state = _(strict(res)) || state // todo: thinking to do around polyfill compatibility here (e.g. dynamically adding properties). goals include: observable window.location for routing, tracking state mutation via additional proxy wrapping, or database bindings.
   }
   return observe
 }
