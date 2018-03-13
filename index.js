@@ -3,6 +3,8 @@ const _ = require('morphable')
 module.exports = xoo
 
 function xoo (obj={}) {
+  if (typeof obj === 'function') return _(obj)
+  
   let use = []
   let state = _(strictBind(obj))
   const observe = function () {

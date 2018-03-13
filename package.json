@@ -1,10 +1,10 @@
 {
   "name": "xoo",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "very serious state management for the dom",
   "main": "index.js",
   "dependencies": {
-    "morphable": "^0.4.5"
+    "morphable": "^0.5.1"
   },
   "devDependencies": {
     "@nx-js/observer-util": "^4.1.2",
