@@ -23,21 +23,21 @@ function xoo (obj={}) {
   return observe
   
   function strictBind (obj) { // todo: decouple state mutation restrictions from binding actions to `this`
-    let runningAction = false
+    let running = new Set()
     return new Proxy(obj, {
       get: function (target, key, receiver) {
         if (typeof target[key] === 'function' && obj.hasOwnProperty(key)) {
           return function () {
-            runningAction = true
+            running.add(target[key])
             const result = target[key].apply(state, arguments) // todo: strict async actions?
-            runningAction = false
+            running.delete(target[key])
             return result
           }
         }
         return Reflect.get(target, key, receiver)
       },
       set: function (target, key, val, receiver) {
-        if (!runningAction) throw new Error('Cannot mutate state outside of an action')
+        if (running.size === 0) throw new Error('Cannot mutate state outside of an action')
         else if (obj[key] === undefined) console.warn(`Adding new observable property ${key} dynamically in unsupported by proxy-polyfill`)
         return Reflect.set(target, key, val, receiver)
       }
