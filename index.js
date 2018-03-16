@@ -6,7 +6,7 @@ function xoo (obj={}) {
   if (typeof obj === 'function') return _(obj)
   
   let use = []
-  let state = _(strictBind(obj))
+  let state = strictBind(_(obj))
   const observe = function () {
     return _.apply(state, arguments)
   }
@@ -17,7 +17,7 @@ function xoo (obj={}) {
   }
   
   observe.observable = function (obj) {
-    return _(strictBind(obj))
+    return strictBind(_(obj))
   }
   
   return observe
@@ -29,17 +29,18 @@ function xoo (obj={}) {
         if (typeof target[key] === 'function' && obj.hasOwnProperty(key)) {
           return function () {
             running.add(target[key])
-            const result = target[key].apply(state, arguments) // todo: strict async actions?
+            const result = target[key].apply(state, arguments)
             running.delete(target[key])
             return result
           }
         }
-        return Reflect.get(target, key, receiver)
+        return target[key]
       },
       set: function (target, key, val, receiver) {
         if (running.size === 0) throw new Error('Cannot mutate state outside of an action')
         else if (obj[key] === undefined) console.warn(`Adding new observable property ${key} dynamically in unsupported by proxy-polyfill`)
-        return Reflect.set(target, key, val, receiver)
+        target[key] = val
+        return true
       }
     })
   }

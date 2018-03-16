@@ -1,20 +1,16 @@
 const xoo = require('./')
 const bel = require('bel')
-const location = require('./location')
-const logger = require('./logger')
-const localStorage = require('./localStorage')
 
 const observe = xoo({
   count: 0,
+  list: [Math.random()],
   increment () {
     this.count++
+  },
+  append () {
+    this.list.push(Math.random())
   }
 })
-
-observe.use(localStorage)
-observe.use(location)
-observe.use(observe.observable) 
-observe.use(logger)
 
 document.body = observe(body)({ 
   text: 'made with xoo (for serious people)' 
@@ -22,11 +18,18 @@ document.body = observe(body)({
 
 function body (state) {
   return bel`<body>
-    <div id="count">
-      <h1>count is ${this.count}</h1>
+    <div id="actions">
       <button onclick=${this.increment}>increment</button>
+      <button onclick=${this.append}>append</button>
     </div>
-    <p>${JSON.stringify(this.location)}</p>
+    <div id="count">
+      <p>count is ${this.count}</p>
+    </div>
+    <div id="list">
+      <ul>
+        ${this.list.map(li => bel`<li>${li}</li>`)}
+      </ul>
+    </div>
     <p>${state.text}</p>
   </body>`
 }
