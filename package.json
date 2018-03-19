@@ -1,8 +1,8 @@
 {
   "name": "xoo",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "very serious state management for the dom",
-  "main": "index.js",
+  "main": "build.js",
   "dependencies": {
     "morphable": "^0.5.1"
   },
@@ -13,6 +13,7 @@
     "store2": "^2.7.0"
   },
   "scripts": {
+    "build": "babel index.js --presets=env --out-file build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Luke Burns",
