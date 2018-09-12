@@ -1,12 +1,12 @@
 const _ = require('morphable')
 
-module.exports = xoo
 
-function xoo (obj={}) {
+function xoo (obj={}, cb=x=>x) {
   if (typeof obj === 'function') return _(obj)
-  
+
   let use = []
-  let state = strictBind(_(obj))
+  let raw = _(obj)
+  let state = strictBind(raw)
   const observe = function () {
     return _.apply(state, arguments)
   }
@@ -15,13 +15,15 @@ function xoo (obj={}) {
     use.push(fn)
     state = use.reduce((prev, next) => next(prev) || prev, init)
   }
-  
+
   observe.observable = function (obj) {
     return strictBind(_(obj))
   }
-  
+
+  cb.call(raw)
+
   return observe
-  
+
   function strictBind (obj) { // todo: decouple state mutation restrictions from binding actions to `this`
     let running = new Set()
     return new Proxy(obj, {
@@ -45,3 +47,7 @@ function xoo (obj={}) {
     })
   }
 }
+
+xoo._ = _
+
+module.exports = xoo
