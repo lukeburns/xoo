@@ -14,7 +14,7 @@ xoo creates reactive views bound to plain javascript objects from pure views. do
 
 ```js
 const xoo = require('xoo')
-const bel = require('bel')
+const html = require('nano')
 
 const state = xoo({
   count: 0,
