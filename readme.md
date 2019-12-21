@@ -10,24 +10,22 @@ powered by [morphable](https://github.com/lukeburns/morphable) and inspired by t
 
 xoo creates reactive views bound to plain javascript objects from pure views. dom is updated as state that it depends upon is mutated.
 
-with xoo, state mutation can only occur within functions defined at creation time ("actions"). this guarantees that state can only be directly affected by code within a fixed block. if you find yourself longing for more freedom, see [morphable](https://github.com/lukeburns/morphable).
-
 ## example
 
 ```js
 const xoo = require('xoo')
 const bel = require('bel')
 
-const bind = xoo({
+const state = xoo({
   count: 0,
   increment () {
     this.count++
   }
 })
 
-document.body = bind(body)()
+document.body = xoo(body).call(state)
 
-function body () { 
+function body () {
   return bel`<body>
     <h1>count is ${this.count}</h1>
     <button onclick=${this.increment}>increment</button>

@@ -1,22 +1,22 @@
 {
   "name": "xoo",
-  "version": "1.2.3",
+  "version": "2.0.0",
   "description": "very serious state management for the dom",
   "main": "build.js",
   "dependencies": {
+    "history-events": "^1.0.4",
     "morphable": "^0.5.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.1",
     "@babel/preset-env": "^7.0.0",
-    "@nx-js/observer-util": "^4.1.2",
-    "bel": "^5.1.7",
-    "history-events": "^1.0.4",
-    "store2": "^2.7.0"
+    "bankai": "^9.15.3",
+    "nanohtml": "^1.9.0"
   },
   "scripts": {
     "build": "babel index.js --presets=@babel/preset-env --out-file build.js",
+    "start": "bankai start ./example/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Luke Burns",

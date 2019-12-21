@@ -1,7 +1,7 @@
-const xoo = require('./')
-const bel = require('bel')
+const xoo = require('../')
+const html = require('nanohtml')
 
-const observe = xoo({
+const state = xoo({
   count: 0,
   list: [Math.random()],
   increment () {
@@ -12,12 +12,10 @@ const observe = xoo({
   }
 })
 
-document.body = observe(body)({ 
-  text: 'made with xoo (for serious people)' 
-})
+document.body = xoo(body).call(state)
 
-function body (state) {
-  return bel`<body>
+function body () {
+  return html`<body>
     <div id="actions">
       <button onclick=${this.increment}>increment</button>
       <button onclick=${this.append}>append</button>
@@ -27,9 +25,8 @@ function body (state) {
     </div>
     <div id="list">
       <ul>
-        ${this.list.map(li => bel`<li>${li}</li>`)}
+        ${this.list.map(li => html`<li>${li}</li>`)}
       </ul>
     </div>
-    <p>${state.text}</p>
   </body>`
 }

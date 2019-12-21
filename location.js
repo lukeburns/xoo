@@ -1,11 +1,12 @@
 const history = require('history-events')
-const { observable } = require('@nx-js/observer-util')
+const xoo = require('./')
 
-module.exports = function (state) {
-  let { hash, host, hostname, href, pathname, search } = window.location
-  state.location = observable({ hash, host, hostname, href, pathname, search })
+module.exports = () => {
+  var { hash, host, hostname, href, pathname, search } = window.location
+  var location = xoo({ hash, host, hostname, href, pathname, search })
   window.addEventListener('changestate', () => {
-    let { hash, host, hostname, href, pathname, search } = window.location
-    Object.assign(state.location, { hash, host, hostname, href, pathname, search })
+    var { hash, host, hostname, href, pathname, search } = window.location
+    Object.assign(location, { hash, host, hostname, href, pathname, search })
   })
+  return location
 }
