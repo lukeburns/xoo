@@ -1,14 +1,14 @@
 # xoo
 
-very serious state management for the dom*
+very *serious* state management for the dom
 
 ```js
 npm install xoo
 ```
 
-powered by [morphable](https://github.com/lukeburns/morphable) and inspired by the [choo](https://github.com/choojs/choo)\* ecosystem, except that xoo is only for *serious* developers. if you like jokes, cats, trains, or the color blue, you should not use xoo. please use [choo](https://github.com/choojs/choo) instead.
+the goal of xoo is to make state management easy peasy. define your state as plain javascript objects and views as functions returning dom elements, then simply wrap your objects and views with `xoo`. anytime you change your state, your dom elements will update too — if they depend on your state!
 
-xoo creates reactive views bound to plain javascript objects from pure views. dom is updated as state that it depends upon is mutated.
+inspired by the wonderful [choo](https://github.com/choojs/choo) ecosystem _!_
 
 ## example
 
