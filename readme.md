@@ -26,7 +26,7 @@ const state = xoo({
 document.body = xoo(body).call(state)
 
 function body () {
-  return bel`<body>
+  return html`<body>
     <h1>count is ${this.count}</h1>
     <button onclick=${this.increment}>increment</button>
   </body>`
