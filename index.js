@@ -1,30 +1,55 @@
 const _ = require('morphable')
 
-function xoo (obj) {
-  if (typeof obj === 'function') {
-    var fn
-    return function () {
-      if (!fn) fn = _.call(this, obj)
-      return fn.apply(this, arguments)
-    }
+function Component (opts) {
+  if (!this.render) {
+    throw new Error('render must be implemented')
   }
-  var state = _.call(this, obj)
-  return new Proxy(state, {
-    get: function (target, key, receiver) {
-      if (typeof target[key] === 'function' && state.hasOwnProperty(key)) {
-        return function () {
-          return target[key].apply(state, arguments)
+
+  const self = _(this)
+  Object.keys(this.__proto__).map(key => {
+    if (key !== 'constructor') {
+      this[key] = this.__proto__[key].bind(self)
+    }
+  })
+  self.render = _(this.render, opts)
+  return new Proxy(self, {
+    get: function (target, key) {
+      const res = Reflect.get(self, key)
+      if (typeof res === 'function') {
+        if (!self.hasOwnProperty(key)) {
+          Reflect.set(self, key, res.bind(self))
         }
+        return Reflect.get(self, key)
+      } else {
+        return res
       }
-      return target[key]
     },
-    set: function (target, key, value, receiver) {
-      target[key] = value
-      return 1
+    set: function (target, key, value) {
+      return Reflect.set(self, key, value)
+    },
+    deleteProperty: function (target, key) {
+      return Reflect.deleteProperty(self, key)
+    },
+    ownKeys: function (target, key) {
+      return Reflect.ownKeys(self, key)
+    },
+    has: function (target, key) {
+      return Reflect.has(self, key)
+    },
+    defineProperty: function (target, key, oDesc) {
+      return Reflect.defineProperty(self, key)
+    },
+    getOwnPropertyDescriptor: function (target, key) {
+      return Reflect.getOwnPropertyDescriptor(self, key)
     }
   })
 }
 
-xoo.observe = _.observe
+function Store (store={}) {
+  return _(store)
+}
 
-module.exports = xoo
+module.exports = {
+  Component,
+  Store
+}

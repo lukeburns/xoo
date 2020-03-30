@@ -1,11 +1,10 @@
 {
   "name": "xoo",
-  "version": "2.0.1",
-  "description": "very serious state management for the dom",
+  "version": "3.0.0",
+  "description": "black magic state management for dom components",
   "main": "build.js",
   "dependencies": {
-    "history-events": "^1.0.4",
-    "morphable": "^0.7.2"
+    "morphable": "^0.7.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",

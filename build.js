@@ -2,33 +2,62 @@
 
 var _ = require('morphable');
 
-function xoo(obj) {
-  if (typeof obj === 'function') {
-    var fn;
-    return function () {
-      if (!fn) fn = _.call(this, obj);
-      return fn.apply(this, arguments);
-    };
+function Component(opts) {
+  var _this = this;
+
+  if (!this.render) {
+    throw new Error('render must be implemented');
   }
 
-  var state = _.call(this, obj);
+  var self = _(this);
 
-  return new Proxy(state, {
-    get: function get(target, key, receiver) {
-      if (typeof target[key] === 'function' && state.hasOwnProperty(key)) {
-        return function () {
-          return target[key].apply(state, arguments);
-        };
+  Object.keys(this.__proto__).map(function (key) {
+    if (key !== 'constructor') {
+      _this[key] = _this.__proto__[key].bind(self);
+    }
+  });
+  self.render = _(this.render, opts);
+  return new Proxy(self, {
+    get: function get(target, key) {
+      var res = Reflect.get(self, key);
+
+      if (typeof res === 'function') {
+        if (!self.hasOwnProperty(key)) {
+          Reflect.set(self, key, res.bind(self));
+        }
+
+        return Reflect.get(self, key);
+      } else {
+        return res;
       }
-
-      return target[key];
     },
-    set: function set(target, key, value, receiver) {
-      target[key] = value;
-      return 1;
+    set: function set(target, key, value) {
+      return Reflect.set(self, key, value);
+    },
+    deleteProperty: function deleteProperty(target, key) {
+      return Reflect.deleteProperty(self, key);
+    },
+    ownKeys: function ownKeys(target, key) {
+      return Reflect.ownKeys(self, key);
+    },
+    has: function has(target, key) {
+      return Reflect.has(self, key);
+    },
+    defineProperty: function defineProperty(target, key, oDesc) {
+      return Reflect.defineProperty(self, key);
+    },
+    getOwnPropertyDescriptor: function getOwnPropertyDescriptor(target, key) {
+      return Reflect.getOwnPropertyDescriptor(self, key);
     }
   });
 }
 
-xoo.observe = _.observe;
-module.exports = xoo;
+function Store() {
+  var store = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  return _(store);
+}
+
+module.exports = {
+  Component: Component,
+  Store: Store
+};

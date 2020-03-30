@@ -1,32 +1,27 @@
-const xoo = require('../')
+const { Component, Store } = require('../')
 const html = require('nanohtml')
 
-const state = xoo({
-  count: 0,
-  list: [Math.random()],
-  increment () {
-    this.count++
-  },
-  append () {
-    this.list.push(Math.random())
+class RandomButton extends Component {
+  constructor () {
+    super()
+    this.number = 0
   }
-})
-
-document.body = xoo(body).call(state)
-
-function body () {
-  return html`<body>
-    <div id="actions">
-      <button onclick=${this.increment}>increment</button>
-      <button onclick=${this.append}>append</button>
-    </div>
-    <div id="count">
-      <p>count is ${this.count}</p>
-    </div>
-    <div id="list">
-      <ul>
-        ${this.list.map(li => html`<li>${li}</li>`)}
-      </ul>
-    </div>
-  </body>`
+  random () {
+    console.log(this)
+    this.number = Math.random()
+  }
+  render ({ time }) {
+    return html`<body>
+      Time: ${time}<br>
+      Random Button: <button onclick=${this.random}>
+        ${this.number}
+      </button>
+    </body>
+    `
+  }
 }
+
+const store = new Store({ time: 1 })
+const button = new RandomButton()
+document.body = button.render(store)
+setInterval(() => store.time++, 1000)
