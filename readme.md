@@ -15,19 +15,19 @@ const { Component } = require('xoo')
 const html = require('nanohtml')
 
 class Body extends Component {
-	constructor () {
-		super()
-		this.count = 0
-	}
-	increment () {
-		this.count++
-	}
-	render () {
-		return html`<body>
-	    <h1>count is ${this.count}</h1>
-	    <button onclick=${this.increment}>increment</button>
-	  </body>`
-	}
+  constructor () {
+    super()
+    this.count = 0
+  }
+  increment () {
+    this.count++
+  }
+  render () {
+    return html`<body>
+      <h1>count is ${this.count}</h1>
+      <button onclick=${this.increment}>increment</button>
+    </body>`
+  }
 }
 
 const body = new Body()
