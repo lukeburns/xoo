@@ -1,6 +1,6 @@
 {
   "name": "xoo",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "black magic state management for dom components",
   "main": "build.js",
   "dependencies": {

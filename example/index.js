@@ -7,7 +7,6 @@ class RandomButton extends Component {
     this.number = 0
   }
   random () {
-    console.log(this)
     this.number = Math.random()
   }
   render ({ time }) {
@@ -23,5 +22,5 @@ class RandomButton extends Component {
 
 const store = new Store({ time: 1 })
 const button = new RandomButton()
-document.body = button.render(store)
+document.body = button(store)
 setInterval(() => store.time++, 1000)
