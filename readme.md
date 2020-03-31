@@ -6,7 +6,7 @@ black magic state management for dom components
 npm install xoo
 ```
 
-the goal of xoo is to make reactive component state management easy peasy with black magic (i.e. proxies) for rapid prototyping. anytime you change your state, your components will update sparsely if they depend on your state. xoo bind `this` to your Component's methods so you don't have to and provides a functional interface for rendering Component instances.
+the goal of xoo is to make reactive component state management easy peasy with black magic (i.e. proxies) for rapid prototyping. anytime you change your state, your components will update sparsely if they depend on your state. xoo bind `this` to your Component's methods so you don't have to.
 
 xoo is built on [morphable](https://github.com/lukeburns/morphable)
 
